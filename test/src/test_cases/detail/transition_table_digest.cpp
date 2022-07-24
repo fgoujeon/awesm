@@ -42,7 +42,7 @@ namespace
 
     using action_tuple = awesm::detail::sm_object_holder_tuple<action0, action1>;
     using guard_tuple = awesm::detail::sm_object_holder_tuple<guard0, guard1>;
-    using state_tuple = awesm::detail::sm_object_holder_tuple<awesm::detail::null_state, state0, state1, state2, state3>;
+    using state_tuple = awesm::detail::sm_object_holder_tuple<awesm::null_state, state0, state1, state2, state3>;
 }
 
 TEST_CASE("detail::transition_table_digest")

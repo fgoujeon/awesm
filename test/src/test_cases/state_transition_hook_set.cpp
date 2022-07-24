@@ -40,7 +40,7 @@ namespace
         {
             return "off";
         }
-        else if constexpr(std::is_same_v<State, awesm::detail::null_state>)
+        else if constexpr(std::is_same_v<State, awesm::null_state>)
         {
             return "null";
         }

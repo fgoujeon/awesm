@@ -70,7 +70,7 @@ TEST_CASE("start_stop")
     auto ctx = context{};
     auto sm = sm_t{ctx};
 
-    REQUIRE(sm.is_active_state<awesm::detail::null_state>());
+    REQUIRE(sm.is_active_state<awesm::null_state>());
     REQUIRE(ctx.out == "");
 
     sm.start();
@@ -79,6 +79,6 @@ TEST_CASE("start_stop")
 
     ctx.out.clear();
     sm.stop();
-    REQUIRE(sm.is_active_state<awesm::detail::null_state>());
+    REQUIRE(sm.is_active_state<awesm::null_state>());
     REQUIRE(ctx.out == "s1::on_exit;");
 }

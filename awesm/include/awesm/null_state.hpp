@@ -4,10 +4,10 @@
 //https://www.boost.org/LICENSE_1_0.txt)
 //Official repository: https://github.com/fgoujeon/awesm
 
-#ifndef AWESM_DETAIL_NULL_STATE_HPP
-#define AWESM_DETAIL_NULL_STATE_HPP
+#ifndef AWESM_NULL_STATE_HPP
+#define AWESM_NULL_STATE_HPP
 
-namespace awesm::detail
+namespace awesm
 {
 
 /*

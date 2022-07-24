@@ -10,7 +10,7 @@
 #include "tlu.hpp"
 #include "type_list.hpp"
 #include "sm_object_holder_tuple.hpp"
-#include "null_state.hpp"
+#include "../null_state.hpp"
 #include "../type_patterns.hpp"
 #include "../none.hpp"
 #include "../transition_table.hpp"
@@ -36,7 +36,7 @@ For example, the following digest type...:
 ... is equivalent to this type:
     struct digest
     {
-        using state_tuple = awesm::detail::sm_object_holder_tuple<awesm::detail::null_state, state0, state1, state2, state3>;
+        using state_tuple = awesm::detail::sm_object_holder_tuple<awesm::null_state, state0, state1, state2, state3>;
         using action_tuple = awesm::detail::sm_object_holder_tuple<action0, action1>;
         using guard_tuple = awesm::detail::sm_object_holder_tuple<guard0, guard1>;
         static constexpr auto has_source_state_patterns = false;

@@ -67,6 +67,12 @@ class sm
         }
 
         template<class State, int RegionIndex = 0>
+        const auto& get_state() const
+        {
+            return subsm_.template get_state<State, RegionIndex>();
+        }
+
+        template<class State, int RegionIndex = 0>
         [[nodiscard]] bool is_active_state() const
         {
             return subsm_.template is_active_state<State, RegionIndex>();

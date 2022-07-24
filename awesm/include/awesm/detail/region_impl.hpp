@@ -7,7 +7,6 @@
 #ifndef AWESM_DETAIL_REGION_IMPL_HPP
 #define AWESM_DETAIL_REGION_IMPL_HPP
 
-#include "../none.hpp"
 #include "call_member.hpp"
 #include "resolve_transition_table.hpp"
 #include "transition_table_digest.hpp"
@@ -15,7 +14,8 @@
 #include "any_container.hpp"
 #include "ignore_unused.hpp"
 #include "event_processing_type.hpp"
-#include "null_state.hpp"
+#include "../none.hpp"
+#include "../null_state.hpp"
 #include "tlu/apply.hpp"
 #include <type_traits>
 
@@ -50,6 +50,12 @@ class region_impl
                 State
             >;
             return active_state_index_ == given_state_index;
+        }
+
+        template<class State>
+        const auto& get_state() const
+        {
+            return states_.get(static_cast<State*>(nullptr));
         }
 
         template<class SmConfiguration, class Event = none>

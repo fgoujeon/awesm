@@ -31,20 +31,6 @@ namespace
         struct color_button_press{};
     }
 
-    namespace actions
-    {
-        template<led_color Color>
-        struct set_led_color
-        {
-            void execute()
-            {
-                ctx.current_led_color = Color;
-            }
-
-            context& ctx;
-        };
-    };
-
     namespace states
     {
         struct off{};
@@ -94,50 +80,35 @@ namespace
             context& ctx;
         };
 
-        class on
+        using on_transition_table = awesm::transition_table
+        <
+            awesm::row<states::emitting_red,   events::color_button_press, states::emitting_green>,
+            awesm::row<states::emitting_green, events::color_button_press, states::emitting_blue>,
+            awesm::row<states::emitting_blue,  events::color_button_press, states::emitting_red>
+        >;
+
+        struct on_def
         {
-            public:
-                on(sm_t& sm, context& ctx):
-                    subsm_(sm, ctx),
-                    ctx_(ctx)
-                {
-                }
+            template<class Event>
+            void on_entry(const Event& /*event*/)
+            {
+            }
 
-                template<class SmConfiguration, class Event>
-                void on_entry(SmConfiguration& sm_conf, const Event& event)
-                {
-                    subsm_.start(sm_conf, event);
-                }
+            template<class Event>
+            void on_event(const Event& /*event*/)
+            {
+            }
 
-                template<class SmConfiguration, class Event>
-                void on_event(SmConfiguration& sm_conf, const Event& event)
-                {
-                    subsm_.process_event(sm_conf, event);
-                }
+            template<class Event>
+            void on_exit(const Event& /*event*/)
+            {
+                ctx.current_led_color = led_color::off;
+            }
 
-                template<class SmConfiguration, class Event>
-                void on_exit(SmConfiguration& sm_conf, const Event& event)
-                {
-                    subsm_.stop(sm_conf, event);
-                    ctx_.current_led_color = led_color::off;
-                }
-
-            private:
-                struct subsm_transition_table
-                {
-                    using type = awesm::transition_table
-                    <
-                        awesm::row<states::emitting_red,   events::color_button_press, states::emitting_green>,
-                        awesm::row<states::emitting_green, events::color_button_press, states::emitting_blue>,
-                        awesm::row<states::emitting_blue,  events::color_button_press, states::emitting_red>
-                    >;
-                };
-
-                using subsm_t = awesm::simple_subsm<subsm_transition_table>;
-
-                subsm_t subsm_;
-                context& ctx_;
+            context& ctx;
         };
+
+        using on = awesm::simple_composite_state<on_def, on_transition_table>;
     }
 
     struct sm_transition_table
@@ -158,10 +129,12 @@ TEST_CASE("composite_state")
     sm.start();
 
     REQUIRE(sm.is_active_state<states::off>());
+    REQUIRE(sm.get_state<states::on>().is_active_state<awesm::null_state>());
     REQUIRE(ctx.current_led_color == led_color::off);
 
     sm.process_event(events::power_button_press{});
     REQUIRE(sm.is_active_state<states::on>());
+    REQUIRE(sm.get_state<states::on>().is_active_state<states::emitting_red>());
     REQUIRE(ctx.current_led_color == led_color::red);
 
     sm.process_event(events::color_button_press{});

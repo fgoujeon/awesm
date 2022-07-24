@@ -6,9 +6,11 @@
 
 #include "awesm/guard_operators.hpp"
 #include "awesm/none.hpp"
+#include "awesm/null_state.hpp"
 #include "awesm/region.hpp"
 #include "awesm/region_list.hpp"
 #include "awesm/row.hpp"
+#include "awesm/simple_composite_state.hpp"
 #include "awesm/simple_sm.hpp"
 #include "awesm/simple_sm_fwd.hpp"
 #include "awesm/simple_subsm.hpp"
