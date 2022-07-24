@@ -4,6 +4,7 @@
 //https://www.boost.org/LICENSE_1_0.txt)
 //Official repository: https://github.com/fgoujeon/awesm
 
+#include "awesm/composite_state.hpp"
 #include "awesm/guard_operators.hpp"
 #include "awesm/none.hpp"
 #include "awesm/null_state.hpp"

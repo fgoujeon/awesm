@@ -7,61 +7,18 @@
 #ifndef AWESM_SIMPLE_COMPOSITE_STATE_HPP
 #define AWESM_SIMPLE_COMPOSITE_STATE_HPP
 
-#include "simple_subsm.hpp"
-#include "detail/sm_object_holder.hpp"
+#include "composite_state.hpp"
+#include "region_list.hpp"
 
 namespace awesm
 {
 
 template<class Definition, class TransitionTable>
-class simple_composite_state
-{
-    public:
-        template<class Sm, class Context>
-        simple_composite_state(Sm& mach, Context& ctx):
-            def_(mach, ctx),
-            subsm_(mach, ctx)
-        {
-        }
-
-        template<class State>
-        [[nodiscard]] bool is_active_state() const
-        {
-            return subsm_.template is_active_state<State>();
-        }
-
-        template<class SmConfiguration, class Event>
-        void on_entry(SmConfiguration& sm_conf, const Event& event)
-        {
-            def_.object.on_entry(event);
-            subsm_.start(sm_conf, event);
-        }
-
-        template<class SmConfiguration, class Event>
-        void on_event(SmConfiguration& sm_conf, const Event& event)
-        {
-            subsm_.process_event(sm_conf, event);
-            def_.object.on_event(event);
-        }
-
-        template<class SmConfiguration, class Event>
-        void on_exit(SmConfiguration& sm_conf, const Event& event)
-        {
-            subsm_.stop(sm_conf, event);
-            def_.object.on_exit(event);
-        }
-
-    private:
-        struct transition_table_holder
-        {
-            using type = TransitionTable;
-        };
-
-        using subsm_t = simple_subsm<transition_table_holder>;
-
-        detail::sm_object_holder<Definition> def_;
-        subsm_t subsm_;
-};
+using simple_composite_state = composite_state
+<
+    Definition,
+    region_list<region<TransitionTable>>
+>;
 
 } //namespace
 
