@@ -4,8 +4,8 @@
 //https://www.boost.org/LICENSE_1_0.txt)
 //Official repository: https://github.com/fgoujeon/awesm
 
-#ifndef AWESM_DETAIL_SUBSM_HPP
-#define AWESM_DETAIL_SUBSM_HPP
+#ifndef AWESM_DETAIL_REGION_TUPLE_HPP
+#define AWESM_DETAIL_REGION_TUPLE_HPP
 
 #include "../region.hpp"
 #include "../region_list.hpp"
@@ -15,23 +15,23 @@ namespace awesm::detail
 {
 
 template<class RegionList>
-class subsm;
+class region_tuple;
 
 template<class... Regions>
-class subsm<region_list<Regions...>>
+class region_tuple<region_list<Regions...>>
 {
     public:
         template<class Sm, class Context>
-        explicit subsm(Sm& top_level_sm, Context& context):
+        explicit region_tuple(Sm& top_level_sm, Context& context):
             regions_{top_level_sm, context}
         {
         }
 
-        subsm(const subsm&) = delete;
-        subsm(subsm&&) = delete;
-        subsm& operator=(const subsm&) = delete;
-        subsm& operator=(subsm&&) = delete;
-        ~subsm() = default;
+        region_tuple(const region_tuple&) = delete;
+        region_tuple(region_tuple&&) = delete;
+        region_tuple& operator=(const region_tuple&) = delete;
+        region_tuple& operator=(region_tuple&&) = delete;
+        ~region_tuple() = default;
 
         template<int RegionIndex>
         const auto& get_region() const

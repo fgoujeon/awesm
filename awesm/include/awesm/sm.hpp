@@ -7,7 +7,7 @@
 #ifndef AWESM_SM_HPP
 #define AWESM_SM_HPP
 
-#include "detail/subsm.hpp"
+#include "detail/region_tuple.hpp"
 #include "detail/sm_configuration.hpp"
 #include "detail/event_processing_type.hpp"
 #include "detail/alternative_lazy.hpp"
@@ -50,7 +50,7 @@ class sm
         template<class Context>
         explicit sm(Context& context):
             conf_(*this, context),
-            subsm_{*this, context}
+            region_tuple_{*this, context}
         {
         }
 
@@ -63,19 +63,19 @@ class sm
         template<int RegionIndex = 0>
         const auto& get_region() const
         {
-            return subsm_.template get_region<RegionIndex>();
+            return region_tuple_.template get_region<RegionIndex>();
         }
 
         template<class State, int RegionIndex = 0>
         const auto& get_state() const
         {
-            return subsm_.template get_state<State, RegionIndex>();
+            return region_tuple_.template get_state<State, RegionIndex>();
         }
 
         template<class State, int RegionIndex = 0>
         [[nodiscard]] bool is_active_state() const
         {
-            return subsm_.template is_active_state<State, RegionIndex>();
+            return region_tuple_.template is_active_state<State, RegionIndex>();
         }
 
         template<class Event = none>
@@ -108,8 +108,6 @@ class sm
             sm_options::detail::defaults::run_to_completion,
             Options...
         >;
-
-        using subsm_t = detail::subsm<typename RegionListHolder::type>;
 
         class event_processing
         {
@@ -245,20 +243,20 @@ class sm
 
             if constexpr(ProcessingType == detail::event_processing_type::start)
             {
-                subsm_.start(conf_, event);
+                region_tuple_.start(conf_, event);
             }
             else if constexpr(ProcessingType == detail::event_processing_type::stop)
             {
-                subsm_.stop(conf_, event);
+                region_tuple_.stop(conf_, event);
             }
             else
             {
-                subsm_.process_event(conf_, event);
+                region_tuple_.process_event(conf_, event);
             }
         }
 
         configuration_t conf_;
-        subsm_t subsm_;
+        detail::region_tuple<typename RegionListHolder::type> region_tuple_;
 
         bool processing_event_ = false;
         queued_event_processing_storage_t queued_event_processings_;

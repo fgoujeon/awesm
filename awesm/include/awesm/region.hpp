@@ -15,7 +15,7 @@ namespace awesm
 namespace detail
 {
     template<class RegionListHolder>
-    class subsm;
+    class region_tuple;
 }
 
 template<class TransitionTable>
@@ -41,7 +41,7 @@ class region:
 
     private:
         template<class RegionListHolder>
-        friend class detail::subsm;
+        friend class detail::region_tuple;
 
         template<class Derived, class TransitionTable2>
         friend class detail::region_impl;
