@@ -109,7 +109,7 @@ class sm
             Options...
         >;
 
-        using subsm_t = detail::subsm<RegionListHolder>;
+        using subsm_t = detail::subsm<typename RegionListHolder::type>;
 
         class event_processing
         {

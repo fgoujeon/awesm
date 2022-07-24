@@ -7,7 +7,6 @@
 #ifndef AWESM_DETAIL_SUBSM_HPP
 #define AWESM_DETAIL_SUBSM_HPP
 
-#include "region_impl.hpp"
 #include "../region.hpp"
 #include "../region_list.hpp"
 #include <type_traits>
@@ -16,19 +15,10 @@ namespace awesm::detail
 {
 
 template<class RegionList>
-struct region_tuple_helper;
+class subsm;
 
 template<class... Regions>
-struct region_tuple_helper<region_list<Regions...>>
-{
-    using type = sm_object_holder_tuple<Regions...>;
-};
-
-template<class RegionList>
-using region_tuple = typename region_tuple_helper<RegionList>::type;
-
-template<class RegionListHolder>
-class subsm
+class subsm<region_list<Regions...>>
 {
     public:
         template<class Sm, class Context>
@@ -98,12 +88,7 @@ class subsm
         }
 
     private:
-        using region_tuple_t = region_tuple
-        <
-            typename RegionListHolder::type
-        >;
-
-        region_tuple_t regions_;
+        sm_object_holder_tuple<Regions...> regions_;
 };
 
 } //namespace

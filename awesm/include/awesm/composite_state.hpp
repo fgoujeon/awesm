@@ -52,12 +52,7 @@ class composite_state
         }
 
     private:
-        struct region_list_holder
-        {
-            using type = RegionList;
-        };
-
-        using subsm_t = detail::subsm<region_list_holder>;
+        using subsm_t = detail::subsm<RegionList>;
 
         detail::sm_object_holder<Definition> def_;
         subsm_t subsm_;
