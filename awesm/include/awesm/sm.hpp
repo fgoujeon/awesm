@@ -7,7 +7,7 @@
 #ifndef AWESM_SM_HPP
 #define AWESM_SM_HPP
 
-#include "subsm.hpp"
+#include "detail/subsm.hpp"
 #include "detail/sm_configuration.hpp"
 #include "detail/event_processing_type.hpp"
 #include "detail/alternative_lazy.hpp"
@@ -109,7 +109,7 @@ class sm
             Options...
         >;
 
-        using subsm_t = subsm<RegionListHolder>;
+        using subsm_t = detail::subsm<RegionListHolder>;
 
         class event_processing
         {

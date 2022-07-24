@@ -12,6 +12,12 @@
 namespace awesm
 {
 
+namespace detail
+{
+    template<class RegionListHolder>
+    class subsm;
+}
+
 template<class TransitionTable>
 class region:
     private detail::region_impl
@@ -22,6 +28,12 @@ class region:
 {
     public:
         template<class State>
+        [[nodiscard]] bool is_active_state() const
+        {
+            return base_t::template is_active_state<State>();
+        }
+
+        template<class State>
         const auto& get_state() const
         {
             return base_t::template get_state<State>();
@@ -29,7 +41,7 @@ class region:
 
     private:
         template<class RegionListHolder>
-        friend class subsm;
+        friend class detail::subsm;
 
         template<class Derived, class TransitionTable2>
         friend class detail::region_impl;
